@@ -21,6 +21,7 @@ module RestClient
               305 => 'Use Proxy', # http/1.1
               306 => 'Switch Proxy', # no longer used
               307 => 'Temporary Redirect', # http/1.1
+              308 => 'Permanent Redirect',
               
               400 => 'Bad Request',
               401 => 'Unauthorized',

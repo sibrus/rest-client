@@ -84,6 +84,12 @@ describe RestClient::Response do
       RestClient::Request.execute(:url => 'http://some/resource', :method => :get).body.should == 'Foo'
     end
 
+    it "follows a redirection when the request is a get with code 308" do
+      stub_request(:get, 'http://some/resource').to_return(:body => '', :status => 308, :headers => {'Location' => 'https://new/resource'})
+      stub_request(:get, 'https://new/resource').to_return(:body => 'Foo')
+      RestClient::Request.execute(:url => 'http://some/resource', :method => :get).body.should == 'Foo'
+    end
+
     it "follows a redirection and keep the parameters" do
       stub_request(:get, 'http://foo:bar@some/resource').with(:headers => {'Accept' => 'application/json'}).to_return(:body => '', :status => 301, :headers => {'Location' => 'http://new/resource'})
       stub_request(:get, 'http://foo:bar@new/resource').with(:headers => {'Accept' => 'application/json'}).to_return(:body => 'Foo')
